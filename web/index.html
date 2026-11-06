@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>基金雷达 · 持仓与建议</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">基金雷达 <small>持仓 / 收益 / 每日建议</small><span id="regime" class="regime hidden"></span></div>
+    <div class="actions">
+      <button id="refreshBtn" title="抓取最新行情并重新计算">刷新行情</button>
+      <button id="addBtn" class="primary">+ 添加基金</button>
+    </div>
+  </header>
+
+  <div id="staleBanner" class="banner hidden"></div>
+
+  <section class="panel">
+    <div class="pf-head">
+      <div><div class="label">总市值</div><div id="totalValue" class="big">--</div></div>
+      <div><div class="label">累计收益</div><div id="totalProfit" class="big">--</div></div>
+      <div><div class="label">今日估算收益</div><div id="todayPnl" class="big">--</div></div>
+      <div><div class="label">最近更新</div><div id="updatedAt" class="small">--</div><div class="small">每天 14:30 / 20:30 自动更新</div></div>
+    </div>
+    <div class="allocbar" id="allocBar"></div>
+    <div class="legend" id="legend"></div>
+    <div id="warning" class="warn hidden"></div>
+  </section>
+
+  <section id="diagnosis" class="panel hidden"></section>
+
+  <section id="fundList" class="funds"></section>
+
+  <section class="panel summary">
+    <div class="label">组合建议</div>
+    <p id="summary">--</p>
+    <a id="reportLink" class="hidden" target="_blank" rel="noopener">查看完整报告 →</a>
+  </section>
+
+  <footer>
+    页面每 60 秒自动刷新；每天 14:30 和 20:30 后台自动抓取净值并更新收益。<br>
+    建议由本地规则生成，仅供参考，不构成投资建议。
+  </footer>
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2 id="modalTitle">添加基金</h2>
+      <button type="button" id="closeModal" aria-label="关闭">×</button>
+    </div>
+    <form id="fundForm">
+      <input type="hidden" id="editCode">
+      <div class="grid2">
+        <label>基金代码<input id="fCode" required maxlength="6" inputmode="numeric" placeholder="如 011609"></label>
+        <label>基金名称<input id="fName" placeholder="留空自动查询"></label>
+        <label>类型
+          <select id="fKind">
+            <option value="a_share">场外 A/C 类</option>
+            <option value="qdii">QDII</option>
+          </select>
+        </label>
+        <label>跟踪指数
+          <select id="fBenchmark"></select>
+        </label>
+      </div>
+
+      <div class="mode">
+        <label><input type="radio" name="inputMode" value="shares" checked> 按份额 + 成本价</label>
+        <label><input type="radio" name="inputMode" value="value"> 按当前市值 + 累计收益</label>
+      </div>
+
+      <div id="sharesFields" class="grid2">
+        <label>持有份额<input id="fShares" type="number" step="0.01" min="0"></label>
+        <label>成本价（元/份）<input id="fCost" type="number" step="0.0001" min="0"></label>
+      </div>
+
+      <div id="valueFields" class="grid2 hidden">
+        <label>当前市值（元）<input id="fValue" type="number" step="0.01" min="0"></label>
+        <label>累计收益（元）<input id="fProfit" type="number" step="0.01" value="0"></label>
+      </div>
+
+      <div class="grid2" style="margin-top:12px">
+        <label>单次加仓预算（元）<input id="fBudget" type="number" step="10" min="0" value="200"></label>
+        <label>目标占比（%）<input id="fTarget" type="number" step="1" min="0" max="100" value="50"></label>
+      </div>
+
+      <div class="hint" id="navHint"></div>
+      <div class="modal-actions">
+        <button type="button" id="cancelBtn">取消</button>
+        <button type="submit" class="primary">保存</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<div id="targetModal" class="modal hidden">
+  <div class="modal-box wide">
+    <div class="modal-head">
+      <h2>建议目标占比</h2>
+      <button type="button" id="closeTargetModal" aria-label="关闭">×</button>
+    </div>
+    <div id="targetSummary" class="hint"></div>
+    <table class="target-table">
+      <thead><tr><th>基金</th><th>当前</th><th>当前目标</th><th>建议目标</th><th>调整理由</th></tr></thead>
+      <tbody id="targetRows"></tbody>
+    </table>
+    <div class="modal-actions">
+      <button type="button" id="cancelTargetBtn">取消</button>
+      <button type="button" id="applyTargetBtn" class="primary">应用建议</button>
+    </div>
+  </div>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>

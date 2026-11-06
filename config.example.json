@@ -1,0 +1,69 @@
+{
+  "timezone": "Asia/Shanghai",
+  "funds": [
+    {
+      "code": "000001",
+      "name": "示例宽基基金A",
+      "cost": 1.0000,
+      "shares": 1000.0,
+      "amount": 1000.0,
+      "amount_mode": "market_value",
+      "benchmark": "sh000300",
+      "kind": "a_share",
+      "add_budget": 200.0,
+      "target_weight": 0.6,
+      "last_buy_date": null
+    },
+    {
+      "code": "000216",
+      "name": "示例黄金基金A",
+      "cost": 2.0000,
+      "shares": 500.0,
+      "amount": 1000.0,
+      "amount_mode": "market_value",
+      "benchmark": "",
+      "kind": "a_share",
+      "add_budget": 200.0,
+      "target_weight": 0.4,
+      "last_buy_date": null
+    }
+  ],
+  "indices": [
+    {"code": "sh000001", "name": "上证指数"},
+    {"code": "sh000300", "name": "沪深300"},
+    {"code": "sz399001", "name": "深证成指"},
+    {"code": "sz399006", "name": "创业板指"},
+    {"code": "sh000688", "name": "科创50"}
+  ],
+  "push": {
+    "wecom": {"enabled": true, "webhook": ""},
+    "email": {
+      "enabled": true,
+      "smtp_host": "smtp.qq.com",
+      "smtp_port": 465,
+      "user": "",
+      "password": "",
+      "to": ""
+    }
+  },
+  "schedule": {"time": "14:30", "weekdays": [1, 2, 3, 4, 5]},
+  "risk": {
+    "max_add_pct": 0.2,
+    "take_profit_pct": 0.2,
+    "fee_guard_days": 7,
+    "min_trade_amount": 50
+  },
+  "portfolio": {
+    "max_single_weight": 0.65,
+    "rebalance_band": 0.05,
+    "target_model": {
+      "tech": 0.4,
+      "dividend": 0.1,
+      "defensive": 0.2,
+      "gold": 0.08,
+      "emerging": 0.1,
+      "balanced": 0.12
+    }
+  },
+  "http": {"timeout": 15, "min_interval": 0.35, "retries": 3}
+}
